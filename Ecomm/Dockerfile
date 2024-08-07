@@ -1,13 +1,14 @@
-# Use the official Ubuntu base image
-FROM ubuntu:22.04
+# Stage 1: Build Stage
+FROM python:3.10-slim AS builder
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Install necessary packages
+# Install build dependencies
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-dev \
-                       postgresql-client libpq-dev && \
+    apt-get install -y \
+    postgresql-client \
+    libpq-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -15,13 +16,22 @@ RUN apt-get update && \
 COPY requirements.txt /app/
 
 # Install Python dependencies
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-# Copy the .env file into the container
-COPY .env /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
 COPY . /app/
+
+# Stage 2: Runtime Stage
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy only the necessary files from the build stage
+COPY --from=builder /app /app
+
+# Copy the .env file into the container
+COPY .env /app/
 
 # Expose the port the app runs on
 EXPOSE 8000
@@ -30,5 +40,5 @@ EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=Ecomm.settings
 
 # Run Django server when the container starts
-ENTRYPOINT ["python3"]
+ENTRYPOINT ["python"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
