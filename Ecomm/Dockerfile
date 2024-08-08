@@ -15,9 +15,6 @@ RUN apt-get update && \
 # Copy the requirements file into the container
 COPY requirements.txt /app/
 
-# Install Python dependencies\
-RUN pip install Django
-
 
 # Copy the rest of the application code into the container
 COPY . /app/
@@ -30,6 +27,7 @@ WORKDIR /app
 
 # Copy only the necessary files from the build stage
 COPY --from=builder /app /app
+# Install Python dependencies\
 RUN pip install --no-cache-dir -r requirements.txt
 # Copy the .env file into the container
 COPY .env /app/
