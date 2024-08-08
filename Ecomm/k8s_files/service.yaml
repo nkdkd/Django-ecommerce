@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-django-web-app
+  labels:
+    app: my-django-web-app
+spec:
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 8000
+  selector:
+    app: my-django-web-app
+  type: ClusterIp
