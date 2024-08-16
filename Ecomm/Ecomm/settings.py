@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',  # Replace with your database name
         'USER': 'postgres',  # Replace with your database username
-        'PASSWORD': os.environ.get('DB_PASSWORD_YO'),  # Replace with your database password
+        'PASSWORD': os.environ['DB_PASSWORD_YO'],  # Replace with your database password
         'HOST': 'monorail.proxy.rlwy.net',  # Or your database server address
         'PORT': '26065'  # Default PostgreSQL port
     }
