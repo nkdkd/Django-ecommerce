@@ -20,7 +20,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*','https://django-ecommerce-production-c8ef.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = ['django-ecommerce-production-c8ef.up.railway.app','https://django-ecommerce-production-c8ef.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://django-ecommerce-production-c8ef.up.railway.app']
 
 # Application definition
 
